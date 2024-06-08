@@ -1,0 +1,117 @@
+Installed apps:
+
+[GAME]
+subterfuge (game)
+Steam
+OSU!
+Tlauncher
+Roblox
+Hustle Castle
+
+[CODING TOOLS]
+Typescript
+NPM
+Node.js
+Chocolately
+Git
+Github desktop
+VS Code
+VS 2019 Community Edition
+Python 3.9.1
+Python 3.10.11
+Python 3.12.4
+Scratch 3
+Scratch 2
+
+[TEXT EDITOR]
+Notepad++
+
+[UNINSTALLER]
+BCUninstaller
+Geek Uninstaller free version
+
+[GAME MAKER]
+Unity Hub
+Godot
+GameMaker
+
+[ADOBE]
+Adobe Acrobat DC
+Adobe AE CS4
+Adobe AE 2021
+Adobe Illustrator 2020
+Adobe Photoshop 2020
+Adobe Air
+
+[3D MODEL BUILDER]
+Autodesk 3ds Max 2022
+Blender
+
+[SECURITY]
+Huorong Security
+Tailscale
+
+[VIDEO PLAYER]
+VLC media player
+FFMPEG
+
+[VIDEO EDITOR]
+剪影专业版
+Cyberlink Power
+Wondershare Flimora
+
+[AUDIO]
+Audacity
+
+[IMAGE CREATE]
+Krita
+
+[ARCHIVE]
+7-Zip
+Zip Genius
+
+[REMOTE DESKTOP]
+Anydesk
+TeamViewer
+Filezilla
+Putty
+
+[BROWSER]
+Google Chrome
+Mozilla Firefox
+Opera GX
+Tor Browser
+
+[COMMUNICATIONS]
+Whatsapp
+Wechat
+
+
+[CUSTOMIZATION]
+Translucent TB
+Files
+Rainmeter
+
+[CRYPTO]
+Monero GUI Wallet
+XMRIG
+
+[VIRTUAL MACHINE]
+QEMU
+Vmware Workstation
+
+[MISC]
+PowerToys
+java 8
+Icecream PDF Split and Merge
+Treesize Free
+OBS Studio
+WSL
+uTorrent
+IDM
+哔哩哔哩
+IObit Unlocker
+ownCloud
+SD Card Formatter
+WInaero Tweaker
+Wireshark
