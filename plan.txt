@@ -1,3 +1,15 @@
 use ninite
 add some apps (like discord)
 make encrypted site to download crackware
+make a install progress --done
+
+install progress :
+detect os
+install required tools' dependencies dependency
+install required tools' dependencies
+install required tools
+uninstall unrequired software
+install softwares using git
+use 7zip to unzip git pack
+make a execute script
+install games
