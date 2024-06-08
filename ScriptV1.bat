@@ -27,7 +27,6 @@
 @echo off
 echo initializing... please wait...
 title Script V1 by Anothermeer
-cd %~dp0
 set "batchPath=%~0"
 for %%k in (%0) do set batchName=%%~nk
 set "vbsGetPrivileges=%temp%\OEgetPriv_%batchName%.vbs"
@@ -58,6 +57,8 @@ if '%1'=='ELEV' (del "%vbsGetPrivileges%" 1>nul 2>nul  &  shift /1)
 
 echo [Info] Get admin priviledges.
 echo [Info] Setting up...
+echo [Info] Getting OS info...
+powershell (Get-WmiObject -class Win32_OperatingSystem).Caption
 echo [Info] Getting install list...
 :: Install List : 
 :: subterfuge (game)
@@ -76,7 +77,6 @@ echo [Info] Getting install list...
 :: Python 3.10.11
 :: Python 3.12.4
 :: Scratch 3
-:: Scratch 2
 :: Notepad++
 :: BCUninstaller
 :: Geek Uninstaller free version
@@ -143,4 +143,62 @@ set L_subterfuge=https://github.com/face-hh/subterfuge.git
 set L_steam=https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe
 set L_tlauncher=https://tlauncher.org/installer
 set L_roblox=https://www.roblox.com/download/client?os=win
-:: uses CLI to install
+set L_7zip=https://7-zip.org/a/7z2406-x64.exe
+
+echo.
+echo [Info] setup done.
+echo [Info] running main menu...
+pause
+goto mainmenu
+
+::           M  A  I  N     C  O  D  E           ::
+:mainmenu
+cls
+title Main Menu - Script V1 by Anothermeer
+echo.
+echo           =================================================
+echo           l         + Script V1 by Anothermeer +          l
+echo           l                  Main Menu                    l
+echo           l                                               l
+echo           l   Available Options :                         l
+echo           l   1. Full Install                             l
+echo           l   2. Manual Install                           l
+echo           l   3. Registry Tweak                           l
+echo           l   4. List Information                         l
+echo           l   E. Exit Script V1                           l
+echo           l                                               l
+echo           =================================================
+echo.
+choice /c 1234E /n /m ".         Choice :  "
+if %ERRORLEVEL%==0 goto BreakExit
+if %ERRORLEVEL%==1 goto FullInst
+if %ERRORLEVEL%==2 goto ManInst
+if %ERRORLEVEL%==3 goto RegTweak
+if %ERRORLEVEL%==4 goto ListInfo
+if %ERRORLEVEL%==5 goto CleanExit
+if %ERRORLEVEL%==255 goto ErrExit
+
+:FullInst
+cls
+echo           =================================================
+echo           l         + Script V1 by Anothermeer +          l
+echo           =================================================
+echo.
+echo [Info] Manual Install selected, confirm? [Y=Continue, n=Back]
+choice /c yn /n /m "[Y/n] >  "
+if %ERRORLEVEL%==0 goto BreakExit
+if %ERRORLEVEL%==1 goto FullInstContinue
+if %ERRORLEVEL%==2 goto mainmenu
+if %ERRORLEVEL%==255 goto ErrExit
+
+:FullInstContinue
+cls
+echo           =================================================
+echo           l         + Script V1 by Anothermeer +          l
+echo           =================================================
+echo.
+echo [Info] Install will start now.
+echo [Info] Installing Required tools...
+echo [Info] Download and Installing Chocolately using powershell
+powershell.exe Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+echo [Info] Downloading 7-Zip

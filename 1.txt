@@ -1,0 +1,3 @@
+chocolately
+7zip
+git
