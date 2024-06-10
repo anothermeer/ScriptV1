@@ -1,37 +1,45 @@
+:: If you see a bunch of dashes and spaces, this is normal because it's an ASCII art.
+:: Remember to see it on your computer or in vertical screen.
+::
 ::      
-::                             _____           _       _    __      ____ 
-::                            / ____|         (_)     | |   \ \    / /_ |
-::                           | (___   ___ _ __ _ _ __ | |_   \ \  / / | |
-::                            \___ \ / __| '__| | '_ \| __|   \ \/ /  | |
-::                            ____) | (__| |  | | |_) | |_     \  /   | |
-::                           |_____/ \___|_|  |_| .__/ \__|     \/    |_|
+::                             _____           _       _    __      __ __ 
+::                            / ____|         (_)     | |   \ \    / /|_ |
+::                           | (___   ___ _ __ _ _ __ | |_   \ \  / /  | |
+::                            \___ \ / __| '__| | '_ \| __|   \ \/ /   | |
+::                            ____) | (__| |  | | |_) | |_     \  /    | |
+::                           |_____/ \___|_|  |_| .__/ \__|     \/     |_|
 ::                                              | |                      
 ::                                              |_|                      
 ::     
-::        |====================================================================================|
+::        +====================================================================================+
 ::        |                                    Script V1                                       |
 ::        |                                                                                    |
 ::        |      This is a tool to install all my application that I need on windows.          |
 ::        |      You can modify it, execute it on your own computer but selling it is          |
 ::        |      prohibited.                                                                   |
 ::        |                                                                                    |
-::        |      Version : 1.0                                                                 |
+::        |      Version : 1.0.1                                                               |
 ::        |      Made by : Anothermeer                                                         |
 ::        |      :)                                                                            |
 ::        |                                                                                    |
-::        |====================================================================================|
-
+::        +====================================================================================+
+::
 
 
 
 @echo off
+:: set window size
+mode con: cols=96 lines=18
+cls
 echo initializing... please wait...
 title Script V1 by Anothermeer
 set "batchPath=%~0"
 for %%k in (%0) do set batchName=%%~nk
 set "vbsGetPrivileges=%temp%\OEgetPriv_%batchName%.vbs"
+set IDKeyPart=%random%%random%%random%%random%
+set IDKey=%IDKeyPart%%IDKeyPart%
 setlocal EnableDelayedExpansion
-echo [Info] Set variables.
+echo [42m[Info][0m Set variables.
 
 :: adminstrator permission grabber by endermanch/matt, changed something ::
 
@@ -55,11 +63,57 @@ setlocal & pushd .
 cd /d %~dp0
 if '%1'=='ELEV' (del "%vbsGetPrivileges%" 1>nul 2>nul  &  shift /1)
 
-echo [Info] Get admin priviledges.
-echo [Info] Setting up...
-echo [Info] Getting OS info...
-powershell (Get-WmiObject -class Win32_OperatingSystem).Caption
-echo [Info] Getting install list...
+echo [42m[Info][0m Get admin priviledges.
+mode con: cols=96 lines=18
+echo [42m[Info][0m Setting up...
+:: select install folder
+:selfolnotavailagain
+echo [Input] Please enter the full path of the folder that you want to install the applications in.
+set /P InstPath="Path >  "
+echo [42m[Info][0m Testing the folder is availible...
+:: test if the selected folder exists
+if exist %InstPath%\ (goto selfolavail) else (goto selfolnotavail)
+:selfolavail
+echo [42m[Info][0m Output : Folder is Available!
+echo [42m[Info][0m creating external folders...
+pushd %InstPath%
+:: make install folder
+mkdir --installer
+mkdir 7zip
+mkdir git
+set InstallerPath=%InstPath%\--installer\
+popd
+echo [42m[Info][0m checking for temp folder...
+if exist %temp%\ScriptV1 (goto tmpfolexist) else (goto tmpfolnotexist)
+:tmpfolnotexist
+echo [42m[Info][0m temp folder not exist, creating...
+mkdir %temp%\ScriptV1
+echo TMPSTART > %temp%\ScriptV1\OSName.txt
+goto continit
+:tmpfolexist
+echo [42m[Info][0m temp folder exists, deleting and recreating...
+del /f /q /a %temp%\ScriptV1\
+mkdir %temp%\ScriptV1
+echo TMPSTART > %temp%\ScriptV1\OSName.txt
+goto continit
+:selfolnotavail
+echo [42m[Info][0m Output : Folder is not Available!
+echo [42m[Info][0m Please reenter the path.
+goto selfolnotavailagain
+:continit
+echo [42m[Info][0m Getting OS info...
+systeminfo | findstr "OS\ Name" | findstr /v Connection | findstr /v Host > %temp%\ScriptV1\OSName.txt
+set /p os=< %temp%\ScriptV1\OSName.txt
+del OSName.txt
+echo [42m[Info][0m Setting registry...
+reg add HKCU\Console\AnothermeerBatchScripts /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v ScriptVersion /t REG_SZ /d 1.0.1 /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v IdentityKey /t REG_SZ /d %IDKey% /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v OSName /t REG_SZ /d %OSName% /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v InstallerPath /t REG_SZ /d %InstallerPath% /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v InstPath /t REG_SZ /d %InstPath% /f
+echo [42m[Info][0m Getting install list...
 :: Install List : 
 :: subterfuge (game)
 :: Steam
@@ -136,7 +190,7 @@ echo [Info] Getting install list...
 :: :Total Installs : 74 apps
 :: :Total Catagories : 20 catagories
 
-echo [Info] Defining Download links...
+echo [42m[Info][0m Defining Download links...
 :: uses git to clone
 set L_subterfuge=https://github.com/face-hh/subterfuge.git
 :: uses exe installer to install
@@ -144,16 +198,18 @@ set L_steam=https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe
 set L_tlauncher=https://tlauncher.org/installer
 set L_roblox=https://www.roblox.com/download/client?os=win
 set L_7zip=https://7-zip.org/a/7z2406-x64.exe
+set L_git=https://github.com/git-for-windows/git/releases/download/v2.45.2.windows.1/Git-2.45.2-64-bit.exe
 
 echo.
-echo [Info] setup done.
-echo [Info] running main menu...
-pause
+echo [42m[Info][0m setup done.
+echo [42m[Info][0m running main menu...
+timeout /t 1 /nobreak > nul
 goto mainmenu
 
 ::           M  A  I  N     C  O  D  E           ::
 :mainmenu
 cls
+mode con: cols=96 lines=18
 title Main Menu - Script V1 by Anothermeer
 echo.
 echo           =================================================
@@ -180,11 +236,12 @@ if %ERRORLEVEL%==255 goto ErrExit
 
 :FullInst
 cls
+mode con: cols=96 lines=18
 echo           =================================================
 echo           l         + Script V1 by Anothermeer +          l
 echo           =================================================
 echo.
-echo [Info] Manual Install selected, confirm? [Y=Continue, n=Back]
+echo [42m[Info][0m Manual Install selected, confirm? [Y=Continue, n=Back]
 choice /c yn /n /m "[Y/n] >  "
 if %ERRORLEVEL%==0 goto BreakExit
 if %ERRORLEVEL%==1 goto FullInstContinue
@@ -193,12 +250,65 @@ if %ERRORLEVEL%==255 goto ErrExit
 
 :FullInstContinue
 cls
+mode con: cols=96 lines=18
 echo           =================================================
 echo           l         + Script V1 by Anothermeer +          l
 echo           =================================================
 echo.
-echo [Info] Install will start now.
-echo [Info] Installing Required tools...
-echo [Info] Download and Installing Chocolately using powershell
-powershell.exe Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-echo [Info] Downloading 7-Zip
+echo [42m[Info][0m Install will start now.
+cd /d %InstallerPath%
+echo [42m[Info][0m Changed directory to installer dir.
+echo [42m[Info][0m Installing Required tools...
+echo [42m[Info][0m Download and Installing Chocolately using powershell
+::powershell Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+set retries=0
+
+:7zipretrydown
+set /A retries = retries + 1
+if retries GTR 3 (goto couldnotfind7zipexec) else (goto continst7zip)
+echo [42m[Info][0m Downloading 7-Zip using powershell
+powershell Invoke-WebRequest -Uri %L_7zip% -OutFile %InstallerPath%/7zip.exe
+echo [42m[Info][0m Verifying 7-zip installer
+if exist 7zip.exe (goto continst7zip) else (goto missinginst7zip)
+:continst7zip
+echo [42m[Info][0m Installing 7-zip
+7zip.exe /S /D="%InstallerPath%\7zip\"
+goto InstGit
+:missinginst7zip
+echo [43m[WARNING][0m The installer could not be found. Retrying in 3 seconds.
+timeout /t 3 > NUL
+goto 7zipretrydown
+:couldnotfind7zipexec
+echo retries=%retries%
+echo [41m[ERROR][0m Maximum retries hit! Maybe the file is not downloaded, the server is down or you don't have an internet connection!
+echo [41m[ERROR][0m Please retry by reexecute this script!
+pause
+goto ErrExit
+:InstGit
+echo [42m[Info][0m Downloading Git using powershell
+powershell Invoke-WebRequest -Uri %L_git% -OutFile %InstPath%/installer/git.exe
+pause
+
+
+
+
+
+::           E  X  I  T             ::
+
+:CleanAndExit
+echo [42m[Info][0m 
+
+:ErrExit
+echo [41m[ERROR][0m Error exit triggered! Cleaning files and exiting.
+rmdir /s %InstPath%/installer
+exit
+
+:BreakExit
+echo [42m[Info][0m Break exit triggered! Exiting...
+exit
+
+:CleanExit
+echo.
+echo [42m[Info][0m Thank you for using this tool, Bye!
+timeout 1 > nul
+exit
