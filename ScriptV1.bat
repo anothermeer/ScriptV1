@@ -115,46 +115,38 @@ reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v InstallerPath /t REG_SZ
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v InstPath /t REG_SZ /d %InstPath% /f
 echo [42m[Info][0m Getting install list...
 :: Install List : 
-:: subterfuge (game)
-:: Steam
-:: Tlauncher
-:: Roblox
-:: Typescript
-:: NPM
-:: Node.js
-:: Chocolately
-:: Git
-:: Github desktop
-:: VS Code
-:: VS 2019 Community Edition
-:: Python 3.9.1
-:: Python 3.10.11
-:: Python 3.12.4
-:: Scratch 3
-:: Notepad++
-:: BCUninstaller
-:: Geek Uninstaller free version
-:: Unity Hub
-:: Godot
-:: GameMaker
-:: Adobe Acrobat DC
-:: Adobe AE CS4
-:: Adobe AE 2021
-:: Adobe Illustrator 2020
-:: Adobe Photoshop 2020
-:: Adobe Air
-:: Autodesk 3ds Max 2022
-:: Blender
-:: Huorong Security
-:: Tailscale
-:: VLC media player
+:: Steam/
+:: Tlauncher/
+:: Roblox/
+:: Git/
+:: Github desktop/
+:: VS Code/
+:: VS 2022 Community Edition/
+:: Python 3.10.11/
+:: Python 3.12.4/
+:: Scratch 3/
+:: Notepad++/
+:: BCUninstaller/
+:: Geek Uninstaller free version/
+:: Unity Hub/
+:: Godot/
+:: GameMaker/
+:: Adobe Acrobat DC/
+:: Adobe AE CS4-
+:: Adobe AE 2021-
+:: Adobe Illustrator 2020-
+:: Adobe Photoshop 2020-
+:: Autodesk 3ds Max 2022-
+:: Blender/
+:: Huorong Security/
+:: Tailscale/
+:: VLC media player/
 :: FFMPEG
 :: 剪影专业版
-:: Cyberlink Power
-:: Wondershare Flimora
+:: Cyberlink Power Director
 :: Audacity
 :: Krita
-:: 7-Zip
+:: 7-Zip/
 :: Zip Genius
 :: Anydesk
 :: TeamViewer
@@ -191,14 +183,66 @@ echo [42m[Info][0m Getting install list...
 :: :Total Catagories : 20 catagories
 
 echo [42m[Info][0m Defining Download links...
-:: uses git to clone
-set L_subterfuge=https://github.com/face-hh/subterfuge.git
 :: uses exe installer to install
 set L_steam=https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe
 set L_tlauncher=https://tlauncher.org/installer
 set L_roblox=https://www.roblox.com/download/client?os=win
 set L_7zip=https://7-zip.org/a/7z2406-x64.exe
 set L_git=https://github.com/git-for-windows/git/releases/download/v2.45.2.windows.1/Git-2.45.2-64-bit.exe
+set L_githubdesktop=https://central.github.com/deployments/desktop/desktop/latest/win32
+set L_vscode=https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user
+set L_vs2022=https://c2rsetup.officeapps.live.com/c2r/downloadVS.aspx?sku=community&channel=Release&version=VS2022&cid=3650:dd8e9dd13f2a816b462220cdac19980f
+set L_py310=https://www.python.org/ftp/python/3.10.0/python-3.10.0-amd64.exe
+set L_py311=https://www.python.org/ftp/python/3.11.0/python-3.11.0-amd64.exe
+set L_scratch3=https://downloads.scratch.mit.edu/desktop/Scratch%20Setup.exe
+set L_notepadpp=https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.6.8/npp.8.6.8.Installer.x64.exe
+set L_BCU=https://github.com/Klocman/Bulk-Crap-Uninstaller/releases/download/v5.8/BCUninstaller_5.8_portable.zip
+set L_geek=https://geekuninstaller.com/geek.zip
+set L_unityhub=https://public-cdn.cloud.unity3d.com/hub/prod/UnityHubSetup.exe
+set L_godot=https://github.com/godotengine/godot/releases/download/4.2.2-stable/Godot_v4.2.2-stable_win64.exe.zip
+set L_gamemaker=https://gamemaker.io/en/download/windows/monthly
+set L_acrobat=https://get.adobe.com/reader/download?os=Windows+10&name=Reader+2024.002.20759+English+Windows%2864Bit%29&lang=en&nativeOs=Windows+10&accepted=mss%2Ccr&declined=&preInstalled=
+set L_blender=https://www.blender.org/download/release/Blender4.1/blender-4.1.1-windows-x64.msi/
+set L_huorong=https://www.huorong.cn/downloadfullv5.html?status=hrstat&src=2
+set L_tailscale=https://pkgs.tailscale.com/stable/tailscale-setup-latest.exe
+set L_VLC=https://get.videolan.org/vlc/3.0.21/win32/vlc-3.0.21-win32.exe
+set L_FFMPEG=https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z
+set L_jianying=https://lf3-package.vlabstatic.com/obj/faceu-packages/installer/jianying_jianyingpro_0_1.2.7_installer.exe
+set L_powerdirector=https://www.cyberlink.com/downloads/trials/powerdirector-video-editing-software/download_en_US.html?r=1#
+set L_audacity=https://github.com/audacity/audacity/releases/download/Audacity-3.5.1/audacity-win-3.5.1-64bit.exe
+set L_krita=https://download.kde.org/stable/krita/5.2.2/krita-x64-5.2.2-setup.exe
+set L_zipgenius=https://zipgenius.it/en/downloads-2/
+set L_anydesk=https://anydesk.com/en/downloads/thank-you?dv=win_exe
+set L_teamviewer=https://download.teamviewer.com/download/TeamViewer_Setup_x64.exe
+set L_filezilla=https://download.filezilla-project.org/client/FileZilla_3.67.0_win64_sponsored2-setup.exe
+set L_putty=https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
+set L_chrome=
+set L_firefox=https://download.mozilla.org/?product=firefox-latest-ssl&os=win64&lang=en-US&_gl=1*1m43u8n*_ga*NTgzNTY2NTIyLjE3MTg0MzczMDc.*_ga_MQ7767QQQW*MTcxODQzNzMwNy4xLjAuMTcxODQzNzMwOC4wLjAuMA..
+set L_operagx=
+set L_tor=
+set L_whatsapp=
+set L_wechat=
+set L_translucenttb=
+set L_files=
+set L_rainmeter=
+set L_moneroguiwallet=
+set L_qemu=
+set L_vmware=
+set L_powertoys=
+set L_java8=
+set L_icecreampdfsam=
+set L_treesize=
+set L_obs=
+set L_wsl=
+set L_utorrent=
+set L_idm=
+set L_bilibili=
+set L_iobit=
+set L_sdcardformatter=
+set L_winaero=
+set L_wireshark=
+:: uses powershell to download
+powershell Invoke-WebRequest
 
 echo.
 echo [42m[Info][0m setup done.
