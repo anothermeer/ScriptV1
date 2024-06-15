@@ -216,10 +216,10 @@ set L_anydesk=https://anydesk.com/en/downloads/thank-you?dv=win_exe
 set L_teamviewer=https://download.teamviewer.com/download/TeamViewer_Setup_x64.exe
 set L_filezilla=https://download.filezilla-project.org/client/FileZilla_3.67.0_win64_sponsored2-setup.exe
 set L_putty=https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html
-set L_chrome=
+set L_chrome=http://dl.google.com/chrome/install/375.126/chrome_installer.exe
 set L_firefox=https://download.mozilla.org/?product=firefox-latest-ssl&os=win64&lang=en-US&_gl=1*1m43u8n*_ga*NTgzNTY2NTIyLjE3MTg0MzczMDc.*_ga_MQ7767QQQW*MTcxODQzNzMwNy4xLjAuMTcxODQzNzMwOC4wLjAuMA..
-set L_operagx=
-set L_tor=
+set L_operagx=https://www.opera.com/zh-cn/computer/thanks?ni=eapgx&os=windows&edition=GX-CN
+set L_tor=https://www.torproject.org/dist/torbrowser/13.0.16/tor-browser-windows-x86_64-portable-13.0.16.exe
 set L_whatsapp=
 set L_wechat=
 set L_translucenttb=
