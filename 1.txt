@@ -1,3 +1,13 @@
 chocolately
 7zip
 git
+
+
+powershell Add-AppxPackage -Path %InstPath%\--installer\
+
+
+--WHATSAPP
+http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/42110208-527e-4168-98f8-06ed5bd47599?P1=1718443053&P2=404&P3=2&P4=ObLFGjXl5qzTloKeF9%2bwkx4%2fPPXCgPh%2byzbeZFdjRGgQMBWkwnl0KL5sHT%2fEmrwH6aqx5mp%2buMlK4yFVH7UtGw%3d%3d
+--TRANSLUCENT TB
+http://tlu.dl.delivery.mp.microsoft.com/filestreamingservice/files/2e8fbf9f-3f0b-45d4-8ba7-a1308864089d?P1=1718442437&P2=404&P3=2&P4=RIsN3MvNpQN%2b4f5RQwRTK7tcLuiIl2Q60EQAEjFmtuSsFNy968nypg0s5a1yHssj2p3pOhqyGMk51veqzsN7UA%3d%3d
+-- 
