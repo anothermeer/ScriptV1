@@ -106,6 +106,29 @@ systeminfo | findstr "OS\ Name" | findstr /v Connection | findstr /v Host > %tem
 set /p os=< %temp%\ScriptV1\OSName.txt
 del OSName.txt
 echo [42m[Info][0m Setting registry...
+
+:checkifisfirststart
+::check
+set checkkey=HKCU\Console\AnothermeerBatchScripts\ScriptV1
+for /f "tokens=2*" %%a in ('reg query %checkkey% /v checkff 2^>nul') do (
+  set value=%%b
+)
+if "!value!" == "0" (
+  goto fssetup
+)
+:fssetup
+cls
+mode con: cols=96 lines=18
+chcp 936 > nul
+title Setup - Script V1 by Anothermeer
+echo Script V1 first setup
+echo.
+echo Please select language.
+echo [1] English
+echo [2] 中文
+echo.
+choice /c 12 /n /m ">  "
+
 reg add HKCU\Console\AnothermeerBatchScripts /f
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /f
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v ScriptVersion /t REG_SZ /d 1.0.1 /f
@@ -247,12 +270,13 @@ echo.
 echo [42m[Info][0m setup done.
 echo [42m[Info][0m running main menu...
 timeout /t 1 /nobreak > nul
-goto mainmenu
+goto checkifisfirststart
 
 ::           M  A  I  N     C  O  D  E           ::
-:mainmenu
+:mainmenu_en
 cls
 mode con: cols=96 lines=18
+chcp 437
 title Main Menu - Script V1 by Anothermeer
 echo.
 echo           =================================================
