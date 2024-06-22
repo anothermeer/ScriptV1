@@ -285,18 +285,18 @@ set L_moneroguiwallet=https://downloads.getmonero.org/gui/win64install
 set L_qemu=https://qemu.weilnetz.de/w64/qemu-w64-setup-20240423.exe
 set L_vmware=
 set L_powertoys=https://github.com/microsoft/PowerToys/releases/download/v0.81.1/PowerToysSetup-0.81.1-x64.exe
-set L_java8=
-set L_icecreampdfsam=
-set L_treesize=
-set L_obs=
+set L_java8=https://javadl.oracle.com/webapps/download/AutoDL?BundleId=249833_43d62d619be4e416215729597d70b8ac
+set L_icecreampdfsam=https://icecreamapps.com/download/pdf_split_and_merge_setup.exe
+set L_treesize=https://customers.jam-software.de/downloadTrial.php?language=EN&article_no=80
+set L_obs=https://cdn-fastly.obsproject.com/downloads/OBS-Studio-30.1.2-Full-Installer-x64.exe
 set L_wsl=
-set L_utorrent=
-set L_idm=
-set L_bilibili=
-set L_iobit=
-set L_sdcardformatter=
-set L_winaero=
-set L_wireshark=
+set L_utorrent=https://www.utorrent.com/web/downloads/complete/track/stable/os/win/
+set L_idm=https://mirror2.internetdownloadmanager.com/idman642build12.exe?v=lt&filename=idman642build12.exe
+set L_bilibili=https://dl.hdslb.com/mobile/fixed/bili_win/bili_win-install.exe?v=1.14.0
+set L_iobituninst=https://www.iobit.com/en/advanceduninstaller.php#
+set L_sdcardformatter=https://www.sdcard.org/downloads/formatter/eula_windows/SDCardFormatterv5_WinEN.zip
+set L_winaero=https://winaerotweaker.com/download/
+set L_wireshark=https://2.na.dl.wireshark.org/win64/Wireshark-4.2.5-x64.exe
 :: uses powershell to download
 powershell Invoke-WebRequest
 
@@ -391,6 +391,162 @@ echo [42m[Info][0m Downloading Git using powershell
 powershell Invoke-WebRequest -Uri %L_git% -OutFile %InstPath%/installer/git.exe
 pause
 
+:seteninit
+set lang=en
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v FirstSetupPassed /t REG_SZ /d 1 /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v PreferedLang /t REG_SZ /d en /f
+title Initializing - Script V1 by Anothermeer
+echo [42m[Info][0m Get admin priviledges.
+mode con: cols=96 lines=18
+echo [42m[Info][0m Setting up...
+
+:: select install folder
+:selfolnotavailagain
+echo [Input] Please enter the full path of the folder that you want to install the applications in.
+set /P InstPath="Path >  "
+echo [42m[Info][0m Testing the folder is availible...
+:: test if the selected folder exists
+if exist %InstPath%\ (goto selfolavail) else (goto selfolnotavail)
+:selfolavail
+echo [42m[Info][0m Output : Folder is Available!
+echo [42m[Info][0m creating external folders...
+pushd %InstPath%
+:: make install folder
+mkdir --installer
+mkdir 7zip
+mkdir git
+set InstallerPath=%InstPath%\--installer\
+popd
+echo [42m[Info][0m checking for temp folder...
+if exist %temp%\ScriptV1 (goto tmpfolexist) else (goto tmpfolnotexist)
+:tmpfolnotexist
+echo [42m[Info][0m temp folder not exist, creating...
+mkdir %temp%\ScriptV1
+echo TMPSTART > %temp%\ScriptV1\OSName.txt
+goto continit
+:tmpfolexist
+echo [42m[Info][0m temp folder exists, deleting and recreating...
+del /f /q /a %temp%\ScriptV1\
+mkdir %temp%\ScriptV1
+echo TMPSTART > %temp%\ScriptV1\OSName.txt
+goto continit
+:selfolnotavail
+echo [42m[Info][0m Output : Folder is not Available!
+echo [42m[Info][0m Please reenter the path.
+goto selfolnotavailagain
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::                                                                 ::
+::          C   H   I   N   E   S   E       M   E   N   U          ::
+::                                                                 ::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:continit
+echo [42m[通知][0m 正在获取系统资讯...
+systeminfo | findstr "OS\ Name" | findstr /v Connection | findstr /v Host > %temp%\ScriptV1\OSName.txt
+set /p os=< %temp%\ScriptV1\OSName.txt
+del OSName.txt
+echo [42m[通知][0m 正在设置注册表...
+
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v ScriptVersion /t REG_SZ /d 1.0.1 /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v IdentityKey /t REG_SZ /d %IDKey% /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v OSName /t REG_SZ /d %OSName% /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v InstallerPath /t REG_SZ /d %InstallerPath% /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v InstPath /t REG_SZ /d %InstPath% /f
+echo [42m[通知][0m 正在获取下载单...
+
+echo.
+echo [42m[通知][0m 设置完成.
+echo [42m[通知][0m 正在运行主菜单...
+timeout /t 1 /nobreak > nul
+goto checkifisfirststart
+
+::           M  A  I  N     C  O  D  E           ::
+
+:mainmenu_en
+cls
+mode con: cols=96 lines=18
+chcp 437
+title Main Menu - Script V1 by Anothermeer
+echo.
+echo           =================================================
+echo           l         + Script V1 by Anothermeer +          l
+echo           l                  Main Menu                    l
+echo           l                                               l
+echo           l   Available Options :                         l
+echo           l   1. Full Install                             l
+echo           l   2. Manual Install                           l
+echo           l   3. Registry Tweak                           l
+echo           l   4. List Information                         l
+echo           l   E. Exit Script V1                           l
+echo           l                                               l
+echo           =================================================
+echo.
+choice /c 1234E /n /m ".         Choice :  "
+if %ERRORLEVEL%==0 goto BreakExit
+if %ERRORLEVEL%==1 goto FullInst
+if %ERRORLEVEL%==2 goto ManInst
+if %ERRORLEVEL%==3 goto RegTweak
+if %ERRORLEVEL%==4 goto ListInfo
+if %ERRORLEVEL%==5 goto CleanExit
+if %ERRORLEVEL%==255 goto ErrExit
+
+:FullInst
+cls
+mode con: cols=96 lines=18
+echo           =================================================
+echo           l         + Script V1 by Anothermeer +          l
+echo           =================================================
+echo.
+echo [42m[Info][0m Manual Install selected, confirm? [Y=Continue, n=Back]
+choice /c yn /n /m "[Y/n] >  "
+if %ERRORLEVEL%==0 goto BreakExit
+if %ERRORLEVEL%==1 goto FullInstContinue
+if %ERRORLEVEL%==2 goto mainmenu
+if %ERRORLEVEL%==255 goto ErrExit
+
+:FullInstContinue
+cls
+mode con: cols=96 lines=18
+echo           =================================================
+echo           l         + Script V1 by Anothermeer +          l
+echo           =================================================
+echo.
+echo [42m[Info][0m Install will start now.
+cd /d %InstallerPath%
+echo [42m[Info][0m Changed directory to installer dir.
+echo [42m[Info][0m Installing Required tools...
+echo [42m[Info][0m Download and Installing Chocolately using powershell
+::powershell Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+set retries=0
+
+:7zipretrydown
+set /A retries = retries + 1
+if retries GTR 3 (goto couldnotfind7zipexec) else (goto continst7zip)
+echo [42m[Info][0m Downloading 7-Zip using powershell
+powershell Invoke-WebRequest -Uri %L_7zip% -OutFile %InstallerPath%/7zip.exe
+echo [42m[Info][0m Verifying 7-zip installer
+if exist 7zip.exe (goto continst7zip) else (goto missinginst7zip)
+:continst7zip
+echo [42m[Info][0m Installing 7-zip
+7zip.exe /S /D="%InstallerPath%\7zip\"
+goto InstGit
+:missinginst7zip
+echo [43m[WARNING][0m The installer could not be found. Retrying in 3 seconds.
+timeout /t 3 > NUL
+goto 7zipretrydown
+:couldnotfind7zipexec
+echo retries=%retries%
+echo [41m[ERROR][0m Maximum retries hit! Maybe the file is not downloaded, the server is down or you don't have an internet connection!
+echo [41m[ERROR][0m Please retry by reexecute this script!
+pause
+goto ErrExit
+:InstGit
+echo [42m[Info][0m Downloading Git using powershell
+powershell Invoke-WebRequest -Uri %L_git% -OutFile %InstPath%/installer/git.exe
+pause
 
 
 
