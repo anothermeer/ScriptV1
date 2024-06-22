@@ -118,7 +118,7 @@ echo [42m[Info][0m Setting up...
 
 :: select install folder
 :selfolnotavailagain
-if lang=en (echo [Input] Please enter the full path of the folder that you want to install the applications in.) else if lang=cn (echo [Input] Please enter the full path of the folder that you want to install the applications in.)
+echo [Input] Please enter the full path of the folder that you want to install the applications in.
 set /P InstPath="Path >  "
 echo [42m[Info][0m Testing the folder is availible...
 :: test if the selected folder exists
