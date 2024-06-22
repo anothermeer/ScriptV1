@@ -25,25 +25,29 @@
 ::        +====================================================================================+
 ::
 
+cls
 #include ScriptV1_IDT_clean
+cls
 
 @echo off
 :: set window size
 mode con: cols=96 lines=18
 cls
+title Initializing - Script V1 by Anothermeer
 echo initializing... please wait...
-title Script V1 by Anothermeer
 set "batchPath=%~0"
 for %%k in (%0) do set batchName=%%~nk
 set "vbsGetPrivileges=%temp%\OEgetPriv_%batchName%.vbs"
 set IDKeyPart=%random%%random%%random%%random%
 set IDKey=%IDKeyPart%%IDKeyPart%
 setlocal EnableDelayedExpansion
+echo [42m[Info][0m Enabled colorize info tag.
 echo [42m[Info][0m Set variables.
 
 :: adminstrator permission grabber by endermanch/matt, changed something ::
 
 :checkPrivileges
+title Getting Privileges - Script V1 by Anothermeer
 NET FILE 1>NUL 2>NUL
 if '%errorlevel%' == '0' ( goto gotPrivileges ) else ( goto getPrivileges )
 
@@ -63,12 +67,58 @@ setlocal & pushd .
 cd /d %~dp0
 if '%1'=='ELEV' (del "%vbsGetPrivileges%" 1>nul 2>nul  &  shift /1)
 
+
+title Initializing - Script V1 by Anothermeer
+:checkifisfirststart
+::check
+set checkkey=HKCU\Console\AnothermeerBatchScripts\ScriptV1\FirstSetupPassed
+reg query %checkkey% > nul
+if %ERRORLEVEL% == 0 goto checklang
+if %ERRORLEVEL% == 1 goto setup
+
+:setup
+cls
+mode con: cols=96 lines=18
+chcp 936 > nul
+title Setup - Script V1 by Anothermeer
+echo Script V1 first setup
+echo.
+echo Please select language.
+echo [1] English
+echo [2] 中文
+echo.
+choice /c 12 /n /m ">  "
+if %ERRORLEVEL%==0 goto BreakExit
+if %ERRORLEVEL%==1 goto seteninit
+if %ERRORLEVEL%==2 goto setcninit
+if %ERRORLEVEL%==255 goto ErrExit
+
+goto ErrExit
+
+:langnotfound
+echo [41m[ERROR][0m Language not found. Using Setup to reconfigure the language.
+goto setup
+
+:checklang
+set key=HKCU\Console\AnothermeerBatchScripts\ScriptV1
+for /f "tokens=2*" %%a in ('reg query %key% /v PreferedLang 2^>nul') do (
+  set value=%%b
+)
+if "!value!" == "en" (goto ENINIT) else if "!value!" == "cn" (goto ) else (goto langnotfound)
+
+:seteninit
+set lang=en
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v FirstSetupPassed /t REG_SZ /d 1 /f
+reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v PreferedLang /t REG_SZ /d en /f
+title Initializing - Script V1 by Anothermeer
 echo [42m[Info][0m Get admin priviledges.
 mode con: cols=96 lines=18
 echo [42m[Info][0m Setting up...
+
 :: select install folder
 :selfolnotavailagain
-echo [Input] Please enter the full path of the folder that you want to install the applications in.
+if lang=en (echo [Input] Please enter the full path of the folder that you want to install the applications in.) else if lang=cn (echo [Input] Please enter the full path of the folder that you want to install the applications in.)
 set /P InstPath="Path >  "
 echo [42m[Info][0m Testing the folder is availible...
 :: test if the selected folder exists
@@ -100,6 +150,14 @@ goto continit
 echo [42m[Info][0m Output : Folder is not Available!
 echo [42m[Info][0m Please reenter the path.
 goto selfolnotavailagain
+
+
+
+
+
+
+
+
 :continit
 echo [42m[Info][0m Getting OS info...
 systeminfo | findstr "OS\ Name" | findstr /v Connection | findstr /v Host > %temp%\ScriptV1\OSName.txt
@@ -107,30 +165,6 @@ set /p os=< %temp%\ScriptV1\OSName.txt
 del OSName.txt
 echo [42m[Info][0m Setting registry...
 
-:checkifisfirststart
-::check
-set checkkey=HKCU\Console\AnothermeerBatchScripts\ScriptV1
-for /f "tokens=2*" %%a in ('reg query %checkkey% /v checkff 2^>nul') do (
-  set value=%%b
-)
-if "!value!" == "0" (
-  goto fssetup
-)
-:fssetup
-cls
-mode con: cols=96 lines=18
-chcp 936 > nul
-title Setup - Script V1 by Anothermeer
-echo Script V1 first setup
-echo.
-echo Please select language.
-echo [1] English
-echo [2] 中文
-echo.
-choice /c 12 /n /m ">  "
-
-reg add HKCU\Console\AnothermeerBatchScripts /f
-reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /f
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v ScriptVersion /t REG_SZ /d 1.0.1 /f
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v IdentityKey /t REG_SZ /d %IDKey% /f
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v OSName /t REG_SZ /d %OSName% /f
@@ -273,6 +307,7 @@ timeout /t 1 /nobreak > nul
 goto checkifisfirststart
 
 ::           M  A  I  N     C  O  D  E           ::
+
 :mainmenu_en
 cls
 mode con: cols=96 lines=18
@@ -363,7 +398,11 @@ pause
 ::           E  X  I  T             ::
 
 :CleanAndExit
-echo [42m[Info][0m 
+echo [42m[Info][0m Still in Progress...
+pause
+pause
+pause
+exit
 
 :ErrExit
 echo [41m[ERROR][0m Error exit triggered! Cleaning files and exiting.
