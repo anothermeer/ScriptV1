@@ -31,11 +31,11 @@ cls
 
 @echo off
 :: set window size
-mode con: cols=96 lines=18
+mode con: cols=120 lines=30
 cls
 title Initializing - Script V1 by Anothermeer
 echo initializing... please wait...
-set "batchPath=%~0"
+echo %cd% > currpath.txt
 for %%k in (%0) do set batchName=%%~nk
 set "vbsGetPrivileges=%temp%\OEgetPriv_%batchName%.vbs"
 set IDKeyPart=%random%%random%%random%%random%
@@ -43,6 +43,7 @@ set IDKey=%IDKeyPart%%IDKeyPart%
 setlocal EnableDelayedExpansion
 echo [42m[Info][0m Enabled colorize info tag.
 echo [42m[Info][0m Set variables.
+
 
 :: adminstrator permission grabber by endermanch/matt, changed something ::
 
@@ -78,10 +79,13 @@ if %ERRORLEVEL% == 1 goto setup
 
 :setup
 cls
-mode con: cols=96 lines=18
+mode con: cols=120 lines=30
+cd /d %BatchPath%
 chcp 936 > nul
 title Setup - Script V1 by Anothermeer
-echo Script V1 first setup
+echo %cd% > currpath2.txt
+call logo.bat
+echo                           ==    First Setup    ==
 echo.
 echo Please select language.
 echo [1] English
@@ -113,7 +117,7 @@ reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v FirstSetupPassed /t REG
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v PreferedLang /t REG_SZ /d en /f
 title Initializing - Script V1 by Anothermeer
 echo [42m[Info][0m Get admin priviledges.
-mode con: cols=96 lines=18
+mode con: cols=120 lines=30
 echo [42m[Info][0m Setting up...
 
 :: select install folder
@@ -310,7 +314,7 @@ goto checkifisfirststart
 
 :mainmenu_en
 cls
-mode con: cols=96 lines=18
+mode con: cols=120 lines=30
 chcp 437
 title Main Menu - Script V1 by Anothermeer
 echo.
@@ -338,7 +342,7 @@ if %ERRORLEVEL%==255 goto ErrExit
 
 :FullInst
 cls
-mode con: cols=96 lines=18
+mode con: cols=120 lines=30
 echo           =================================================
 echo           l         + Script V1 by Anothermeer +          l
 echo           =================================================
@@ -352,7 +356,7 @@ if %ERRORLEVEL%==255 goto ErrExit
 
 :FullInstContinue
 cls
-mode con: cols=96 lines=18
+mode con: cols=120 lines=30
 echo           =================================================
 echo           l         + Script V1 by Anothermeer +          l
 echo           =================================================
@@ -398,7 +402,7 @@ reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v FirstSetupPassed /t REG
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v PreferedLang /t REG_SZ /d en /f
 title Initializing - Script V1 by Anothermeer
 echo [42m[Info][0m Get admin priviledges.
-mode con: cols=96 lines=18
+mode con: cols=120 lines=30
 echo [42m[Info][0m Setting up...
 
 :: select install folder
@@ -467,7 +471,7 @@ goto checkifisfirststart
 
 :mainmenu_en
 cls
-mode con: cols=96 lines=18
+mode con: cols=120 lines=30
 chcp 437
 title Main Menu - Script V1 by Anothermeer
 echo.
@@ -495,7 +499,7 @@ if %ERRORLEVEL%==255 goto ErrExit
 
 :FullInst
 cls
-mode con: cols=96 lines=18
+mode con: cols=120 lines=30
 echo           =================================================
 echo           l         + Script V1 by Anothermeer +          l
 echo           =================================================
@@ -509,7 +513,7 @@ if %ERRORLEVEL%==255 goto ErrExit
 
 :FullInstContinue
 cls
-mode con: cols=96 lines=18
+mode con: cols=120 lines=30
 echo           =================================================
 echo           l         + Script V1 by Anothermeer +          l
 echo           =================================================
