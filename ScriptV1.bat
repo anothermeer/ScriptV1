@@ -35,19 +35,20 @@ mode con: cols=120 lines=30
 cls
 title Initializing - Script V1 by Anothermeer
 echo initializing... please wait...
+echo [42m[Info][0m Enabled colorize info tag.
 set IDKeyPart=%random%%random%%random%%random%
 set IDKey=%IDKeyPart%%IDKeyPart%
 
+:: set file location
 reg query HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v FileLoc > nul
 if %errorlevel% equ 0 (
-  echo "Key Exist, keeping file location"
+  echo "[42m[Info][0m Key Exist, keeping file location"
 ) else (
-  echo "Key not exists, adding Value.."
+  echo "[42m[Info][0m Key not exists, adding Value.."
   reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v FileLoc /t REG_SZ /d %cd% /f > nul
 )
 
 setlocal EnableDelayedExpansion
-echo [42m[Info][0m Enabled colorize info tag.
 echo [42m[Info][0m Set variables.
 
 :: get admin privelege
@@ -73,18 +74,44 @@ mode con: cols=120 lines=30
 title Setup - Script V1 by Anothermeer
 call logo.bat
 echo                           ==    First Setup    ==
+echo                                  Step  1/2
 echo.
 echo Please select language.
 echo [1] English
 echo [2] Chinese
-echo.
-choice /c 12 /n /m ">  "
+echo [E] Exit Program
+choice /c 12e /n /m ">  "
 if %ERRORLEVEL%==0 goto BreakExit
-if %ERRORLEVEL%==1 goto seteninit
+if %ERRORLEVEL%==1 goto EN_setinstpath
 if %ERRORLEVEL%==2 goto setcninit
+if %ERRORLEVEL%==3 goto CleanExit
 if %ERRORLEVEL%==255 goto ErrExit
+:: setcninit doesnt connect to anything now, if select the option, it will CRASH.
 
 goto ErrExit
+
+:EN_setinstpath
+:reenter_instpath
+cls
+mode con: cols=120 lines=30
+title Setup - Script V1 by Anothermeer
+call logo.bat
+echo                           ==    First Setup    ==
+echo                                  Step  2/2
+echo.
+echo Please enter the location you wish to install to.
+echo.
+set /P InstPath="Path >  "
+echo.
+echo [42m[Info][0m Testing the folder is availible...
+if exist %InstPath%\ (goto selfolavail_en) else (goto selfolnotavail_en)
+
+:selfolnotavail_en
+echo [41m[ERROR][0m Hey! Looks like the folder you choosed is not avalible or missing.
+echo [41m[ERROR][0m Please reenter the path.
+echo [46m[Instruction][0m Press any key to reenter.
+pause > nul
+goto reenter_instpath
 
 :langnotfound
 echo [41m[ERROR][0m Language not found. Using Setup to reconfigure the language.
@@ -107,14 +134,10 @@ mode con: cols=120 lines=30
 echo [42m[Info][0m Setting up...
 
 :: select install folder
-:selfolnotavailagain
-echo [Input] Please enter the full path of the folder that you want to install the applications in.
-set /P InstPath="Path >  "
-echo [42m[Info][0m Testing the folder is availible...
-:: test if the selected folder exists
-if exist %InstPath%\ (goto selfolavail) else (goto selfolnotavail)
-:selfolavail
-echo [42m[Info][0m Output : Folder is Available!
+
+:selfolavail_en
+cls
+echo [42m[Info][0m Good news! The folder choosen is availible!
 echo [42m[Info][0m creating external folders...
 pushd %InstPath%
 :: make install folder
@@ -136,10 +159,7 @@ del /f /q /a %temp%\ScriptV1\
 mkdir %temp%\ScriptV1
 echo TMPSTART > %temp%\ScriptV1\OSName.txt
 goto continit
-:selfolnotavail
-echo [42m[Info][0m Output : Folder is not Available!
-echo [42m[Info][0m Please reenter the path.
-goto selfolnotavailagain
+
 
 
 
@@ -152,16 +172,15 @@ goto selfolnotavailagain
 echo [42m[Info][0m Getting OS info...
 systeminfo | findstr "OS\ Name" | findstr /v Connection | findstr /v Host > %temp%\ScriptV1\OSName.txt
 set /p os=< %temp%\ScriptV1\OSName.txt
-del %temp%\ScriptV1
+del %temp%\ScriptV1\OSName.txt
 echo [42m[Info][0m Setting registry...
-pause
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v ScriptVersion /t REG_SZ /d 1.0.1 /f
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v IdentityKey /t REG_SZ /d %IDKey% /f
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v OSName /t REG_SZ /d %OSName% /f
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v InstallerPath /t REG_SZ /d %InstallerPath% /f
 reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v InstPath /t REG_SZ /d %InstPath% /f
 echo [42m[Info][0m Getting install list...
-pause
+
 :: See instapps.txt for list
 :: Total apps : 56
 :: Apps using download link to download : 54
@@ -222,7 +241,6 @@ set L_iobituninst="https://www.iobit.com/en/advanceduninstaller.php#"
 set L_sdcardformatter="https://www.sdcard.org/downloads/formatter/eula_windows/SDCardFormatterv5_WinEN.zip"
 set L_winaero="https://winaerotweaker.com/download/"
 set L_wireshark="https://2.na.dl.wireshark.org/win64/Wireshark-4.2.5-x64.exe"
-pause
 :: uses appinstaller to install
 set L_translucenttb="https://github.com/TranslucentTB/TranslucentTB/releases/download/2024.1/TranslucentTB.appinstaller"
 set L_whatsapp=a
@@ -232,7 +250,8 @@ echo.
 echo [42m[Info][0m setup done.
 echo [42m[Info][0m running main menu...
 timeout /t 1 /nobreak > nul
-
+echo [42m[Info] ==== INITIALIZE COMPLETE! ====[0m
+pause
 
 
 ::           M  A  I  N     C  O  D  E           ::
@@ -280,7 +299,7 @@ echo           =================================================
 echo           l         + Script V1 by Anothermeer +          l
 echo           =================================================
 echo.
-echo [42m[Info][0m Manual Install selected, confirm? [Y=Continue, n=Back]
+echo [42m[Info][0m Full Install selected, confirm? [Y=Continue, n=Back]
 choice /c yn /n /m "[Y/n] >  "
 if %ERRORLEVEL%==0 goto BreakExit
 if %ERRORLEVEL%==1 goto FullInstContinue
@@ -380,110 +399,8 @@ goto selfolnotavailagain
 ::                                                                 ::
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-:continit
-echo [42m[通知][0m 正在获取系统资讯...
-systeminfo | findstr "OS\ Name" | findstr /v Connection | findstr /v Host > %temp%\ScriptV1\OSName.txt
-set /p os=< %temp%\ScriptV1\OSName.txt
-del OSName.txt
-echo [42m[通知][0m 正在设置注册表...
-
-reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v ScriptVersion /t REG_SZ /d 1.0.1 /f
-reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v IdentityKey /t REG_SZ /d %IDKey% /f
-reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v OSName /t REG_SZ /d %OSName% /f
-reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v InstallerPath /t REG_SZ /d %InstallerPath% /f
-reg add HKCU\Console\AnothermeerBatchScripts\ScriptV1 /v InstPath /t REG_SZ /d %InstPath% /f
-echo [42m[通知][0m 正在获取下载单...
-
-echo.
-echo [42m[通知][0m 设置完成.
-echo [42m[通知][0m 正在运行主菜单...
-timeout /t 1 /nobreak > nul
-goto checkifisfirststart
-
-::           M  A  I  N     C  O  D  E           ::
-
-:mainmenu_en
-cls
-mode con: cols=120 lines=30
-chcp 437
-title Main Menu - Script V1 by Anothermeer
-echo.
-echo           =================================================
-echo           l         + Script V1 by Anothermeer +          l
-echo           l                  Main Menu                    l
-echo           l                                               l
-echo           l   Available Options :                         l
-echo           l   1. Full Install                             l
-echo           l   2. Manual Install                           l
-echo           l   3. Registry Tweak                           l
-echo           l   4. List Information                         l
-echo           l   E. Exit Script V1                           l
-echo           l                                               l
-echo           =================================================
-echo.
-choice /c 1234E /n /m ".         Choice :  "
-if %ERRORLEVEL%==0 goto BreakExit
-if %ERRORLEVEL%==1 goto FullInst
-if %ERRORLEVEL%==2 goto ManInst
-if %ERRORLEVEL%==3 goto RegTweak
-if %ERRORLEVEL%==4 goto ListInfo
-if %ERRORLEVEL%==5 goto CleanExit
-if %ERRORLEVEL%==255 goto ErrExit
-
-:FullInst
-cls
-mode con: cols=120 lines=30
-echo           =================================================
-echo           l         + Script V1 by Anothermeer +          l
-echo           =================================================
-echo.
-echo [42m[Info][0m Manual Install selected, confirm? [Y=Continue, n=Back]
-choice /c yn /n /m "[Y/n] >  "
-if %ERRORLEVEL%==0 goto BreakExit
-if %ERRORLEVEL%==1 goto FullInstContinue
-if %ERRORLEVEL%==2 goto mainmenu
-if %ERRORLEVEL%==255 goto ErrExit
-
-:FullInstContinue
-cls
-mode con: cols=120 lines=30
-echo           =================================================
-echo           l         + Script V1 by Anothermeer +          l
-echo           =================================================
-echo.
-echo [42m[Info][0m Install will start now.
-cd /d %InstallerPath%
-echo [42m[Info][0m Changed directory to installer dir.
-echo [42m[Info][0m Installing Required tools...
-echo [42m[Info][0m Download and Installing Chocolately using powershell
-::powershell Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-set retries=0
-
-:7zipretrydown
-set /A retries = retries + 1
-if retries GTR 3 (goto couldnotfind7zipexec) else (goto continst7zip)
-echo [42m[Info][0m Downloading 7-Zip using powershell
-powershell Invoke-WebRequest -Uri %L_7zip% -OutFile %InstallerPath%/7zip.exe
-echo [42m[Info][0m Verifying 7-zip installer
-if exist 7zip.exe (goto continst7zip) else (goto missinginst7zip)
-:continst7zip
-echo [42m[Info][0m Installing 7-zip
-7zip.exe /S /D="%InstallerPath%\7zip\"
-goto InstGit
-:missinginst7zip
-echo [43m[WARNING][0m The installer could not be found. Retrying in 3 seconds.
-timeout /t 3 > NUL
-goto 7zipretrydown
-:couldnotfind7zipexec
-echo retries=%retries%
-echo [41m[ERROR][0m Maximum retries hit! Maybe the file is not downloaded, the server is down or you don't have an internet connection!
-echo [41m[ERROR][0m Please retry by reexecute this script!
-pause
-goto ErrExit
-:InstGit
-echo [42m[Info][0m Downloading Git using powershell
-powershell Invoke-WebRequest -Uri %L_git% -OutFile %InstPath%/installer/git.exe
-pause
+::     working on english, then translate to Chinese
+::     REMEMBER TO USE CHCP!!!
 
 
 
