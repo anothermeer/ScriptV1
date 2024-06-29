@@ -2,6 +2,7 @@
 title ScriptV1 Cleaner
 echo ScriptV1 Internal debug tool - ScriptV1 Cleaner
 echo.
+FOR /F "skip=2 tokens=2*" %%a in ('reg query "HKCU\Console\AnothermeerBatchScripts\ScriptV1" /v FileLoc') do set instloc=%%b
 set /p instpath="Please enter the path of the installation folder > "
 echo.
 echo Starting cleaning...

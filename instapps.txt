@@ -1,7 +1,6 @@
 Installed apps:
 
 [GAME]
-subterfuge (game)
 Steam
 OSU!
 Tlauncher
@@ -9,10 +8,7 @@ Roblox
 Hustle Castle
 
 [CODING TOOLS]
-Typescript
-NPM
-Node.js
-Chocolately
+
 Git
 Github desktop
 VS Code
